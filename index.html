@@ -206,6 +206,9 @@
     transform: translateY(-3px);
   }
 
+  .card { cursor: pointer; }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   .card-image {
     width: 100%;
     aspect-ratio: 16 / 10;
@@ -245,14 +248,14 @@
     flex-grow: 1;
   }
 
-  .card .tags {
+  .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 20px;
   }
 
-  .card .tags span {
+  .tags span {
     font-size: 0.75rem;
     color: var(--text-dim);
     background: var(--bg-alt);
@@ -260,6 +263,65 @@
     padding: 3px 10px;
     border-radius: 999px;
   }
+
+  /* Project modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 4, 10, 0.82);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 50;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 760px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .modal-close:hover { color: var(--text); border-color: var(--accent-dim); }
+
+  .modal-image {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    margin-bottom: 18px;
+  }
+
+  .modal-box p { color: var(--text-dim); font-size: 0.95rem; margin: 0 0 20px; }
 
   /* Contact */
   .contact-card {
@@ -333,7 +395,7 @@
 
       <div class="projects-grid">
 
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog">
           <img class="card-image" src="assets/neu.jpg" alt="Panel de clientes de Neu+ (recreación con datos de ejemplo)">
           <div class="card-image-caption">Recreación de la UI con datos de ejemplo — la app real corre en producción con datos del cliente.</div>
           <div class="card-kicker">Producción · Cliente real</div>
@@ -353,7 +415,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog">
           <img class="card-image" src="assets/flowpedidos.jpg" alt="Panel operativo de FlowPedidos mostrando KPIs y pedidos multicanal">
           <div class="card-kicker">Trabajo final integrador</div>
           <h3>flowpedidos</h3>
@@ -371,7 +433,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog">
           <img class="card-image" src="assets/tremendogol.jpg" alt="App TremendoGol mostrando fixtures de fútbol del día agrupados por liga">
           <div class="card-kicker">Proyecto personal</div>
           <h3>TremendoGol</h3>
@@ -388,7 +450,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog">
           <img class="card-image" src="assets/foodstore.jpg" alt="Catálogo de Food Store con filtros por categoría y precio">
           <div class="card-kicker">Trabajo grupal · Cursada</div>
           <h3>Food Store</h3>
@@ -443,6 +505,17 @@
   </div>
 </main>
 
+<div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+    <img class="modal-image" id="modalImage" src="" alt="">
+    <div class="card-kicker" id="modalKicker"></div>
+    <h3 id="modalTitle" style="margin: 0 0 14px; font-size: 1.4rem;"></h3>
+    <p id="modalDescription"></p>
+    <div class="tags" id="modalTags"></div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     © <span id="year"></span> Nicolás Llaneza
@@ -451,6 +524,48 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  const modal = document.getElementById('projectModal');
+  const modalImage = document.getElementById('modalImage');
+  const modalKicker = document.getElementById('modalKicker');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalTags = document.getElementById('modalTags');
+
+  function openModal(card) {
+    const img = card.querySelector('.card-image');
+    modalImage.src = img.src;
+    modalImage.alt = img.alt;
+    modalKicker.textContent = card.querySelector('.card-kicker').textContent;
+    modalTitle.textContent = card.querySelector('h3').textContent;
+    modalDescription.textContent = card.querySelector('p').textContent.trim();
+    modalTags.innerHTML = card.querySelector('.tags').innerHTML;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => openModal(card));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(card);
+      }
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
 </script>
 
 </body>

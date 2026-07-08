@@ -217,19 +217,11 @@
     background: var(--bg-alt);
   }
 
-  .card-image-placeholder {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    border-radius: 10px;
-    border: 1px dashed var(--border);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .card-image-caption {
+    font-size: 0.72rem;
     color: var(--text-dim);
-    font-size: 0.85rem;
-    text-align: center;
-    padding: 12px;
+    font-style: italic;
+    margin: -10px 0 14px;
   }
 
   .card-kicker {
@@ -342,7 +334,8 @@
       <div class="projects-grid">
 
         <div class="card">
-          <div class="card-image-placeholder">Captura próximamente</div>
+          <img class="card-image" src="assets/neu.jpg" alt="Panel de clientes de Neu+ (recreación con datos de ejemplo)">
+          <div class="card-image-caption">Recreación de la UI con datos de ejemplo — la app real corre en producción con datos del cliente.</div>
           <div class="card-kicker">Producción · Cliente real</div>
           <h3>Neu+</h3>
           <p>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyectos — Nicolás Llaneza</title>
+<meta name="description" content="Proyectos de Nicolás Llaneza: flowpedidos, Neu+, TremendoGol y Food Store, con caso de estudio de cada uno.">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="../index.html">Nicolás Llaneza</a>
+      <ul class="nav-links">
+        <li><a href="./">Proyectos</a></li>
+        <li><a href="../index.html#sobre-mi">Sobre mí</a></li>
+        <li><a href="../index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="page-hero">
+      <a class="back-link" href="../index.html">← Volver al inicio</a>
+      <div class="eyebrow">Proyectos</div>
+      <h1>Cuatro proyectos, cuatro contextos distintos</h1>
+      <p class="section-sub">
+        Una tesis con arquitectura de integración e IA, una app en producción para un
+        cliente real, un trabajo grupal de la cursada y un proyecto personal. Cada tarjeta
+        lleva a su caso de estudio completo.
+      </p>
+    </section>
+
+    <section style="padding-top: 0;">
+      <div class="projects-grid">
+
+        <a class="card" href="neu.html">
+          <img class="card-image" src="../assets/neu.jpg" alt="Panel de clientes de Neu+ (recreación con datos de ejemplo)">
+          <div class="card-image-caption">Recreación de la UI con datos de ejemplo.</div>
+          <div class="card-kicker">Producción · Cliente real</div>
+          <h3>Neu+</h3>
+          <p>
+            Sistema de seguimiento post-venta para un taller automotriz, en uso real por
+            un cliente. Gestión de clientes y vehículos, consulta pública por patente,
+            notificaciones por WhatsApp.
+          </p>
+          <div class="tags">
+            <span>React</span><span>Supabase</span><span>PostgreSQL</span><span>Vercel</span>
+          </div>
+          <span class="card-cta">Ver caso de estudio →</span>
+        </a>
+
+        <a class="card" href="flowpedidos.html">
+          <img class="card-image" src="../assets/flowpedidos.jpg" alt="Panel operativo de FlowPedidos mostrando KPIs y pedidos multicanal">
+          <div class="card-kicker">Trabajo final integrador</div>
+          <h3>flowpedidos</h3>
+          <p>
+            Arquitectura de integración multicanal para PyMEs de e-commerce: centraliza
+            pedidos de Mercado Libre, WhatsApp, WooCommerce y Tienda Nube en un modelo de
+            datos canónico único, con mensajes generados por IA.
+          </p>
+          <div class="tags">
+            <span>n8n</span><span>PostgreSQL</span><span>OpenAI</span><span>Claude</span>
+          </div>
+          <span class="card-cta">Ver caso de estudio →</span>
+        </a>
+
+        <a class="card" href="tremendogol.html">
+          <img class="card-image" src="../assets/tremendogol.jpg" alt="App TremendoGol mostrando fixtures de fútbol del día agrupados por liga">
+          <div class="card-kicker">Proyecto personal</div>
+          <h3>TremendoGol</h3>
+          <p>
+            App mobile-first de fixtures, resultados y tablas de posiciones de fútbol,
+            agrupados por liga y con traducción de estados de partido en vivo.
+          </p>
+          <div class="tags">
+            <span>React</span><span>Express</span><span>Prisma</span><span>PostgreSQL</span>
+          </div>
+          <span class="card-cta">Ver caso de estudio →</span>
+        </a>
+
+        <a class="card" href="foodstore.html">
+          <img class="card-image" src="../assets/foodstore.jpg" alt="Catálogo de Food Store con filtros por categoría y precio">
+          <div class="card-kicker">Trabajo grupal · Cursada</div>
+          <h3>Food Store</h3>
+          <p>
+            E-commerce de productos alimenticios hecho en equipo: catálogo, carrito y
+            pedidos con máquina de estados, panel admin y auth con JWT y roles.
+          </p>
+          <div class="tags">
+            <span>FastAPI</span><span>SQLModel</span><span>React</span><span>TypeScript</span>
+          </div>
+          <span class="card-cta">Ver caso de estudio →</span>
+        </a>
+
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span> Nicolás Llaneza
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

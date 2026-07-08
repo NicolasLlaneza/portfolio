@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Store — Nicolás Llaneza</title>
+<meta name="description" content="Caso de estudio: e-commerce de productos alimenticios con FastAPI, SQLModel, React y auth JWT con roles.">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="../index.html">Nicolás Llaneza</a>
+      <ul class="nav-links">
+        <li><a href="./">Proyectos</a></li>
+        <li><a href="../index.html#sobre-mi">Sobre mí</a></li>
+        <li><a href="../index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="case-hero">
+      <a class="back-link" href="./">← Volver a proyectos</a>
+      <div class="card-kicker">Trabajo grupal · Cursada</div>
+      <h1>Food Store</h1>
+      <p class="lead">
+        E-commerce de productos alimenticios hecho en equipo: catálogo, carrito y pedidos
+        con máquina de estados, panel admin de stock y auth con JWT y roles.
+      </p>
+
+      <div class="case-meta">
+        <div><div class="label">Rol</div><div class="value">Trabajo en equipo (5 personas)</div></div>
+        <div><div class="label">Contexto</div><div class="value">Cursada Programación 4 · UTN-FRM</div></div>
+        <div><div class="label">Stack</div><div class="value">FastAPI · SQLModel · React</div></div>
+      </div>
+
+      <img class="case-image" src="../assets/foodstore.jpg" alt="Catálogo de Food Store con filtros por categoría y precio">
+    </section>
+
+    <section class="case-body" style="padding-top: 0;">
+      <h2>El problema</h2>
+      <p>
+        El trabajo práctico grupal de Programación 4 pedía construir un backend real con
+        autenticación, roles y un dominio de negocio no trivial — no un CRUD simple, sino
+        algo con reglas propias: control de stock, costeo de productos según sus insumos,
+        y un flujo de pedidos con estados.
+      </p>
+
+      <h2>Qué construí</h2>
+      <p>
+        Un backend en FastAPI + SQLModel sobre PostgreSQL con autenticación JWT (access y
+        refresh token en cookies HttpOnly) y 4 roles con permisos distintos por endpoint
+        (admin, stock, pedidos, cliente). El catálogo maneja categorías, ingredientes y
+        productos, donde el costo de cada producto se recalcula automáticamente en base al
+        precio de sus insumos. Los pedidos siguen una máquina de estados (pendiente →
+        confirmado → en preparación → en camino → entregado / cancelado). El frontend en
+        React + TypeScript usa Zustand para estado global y TanStack Query para el
+        catálogo y los pedidos.
+      </p>
+
+      <h2>Mi rol</h2>
+      <p>
+        Trabajamos 5 personas dividiendo el proyecto en módulos (usuarios, catálogo,
+        pedidos). Además del código, participé del diseño del patrón repository /
+        unit-of-work genérico que usa todo el backend, para no repetir el mismo código de
+        acceso a datos en cada módulo.
+      </p>
+
+      <h2>Desafíos técnicos</h2>
+      <ul>
+        <li>
+          <strong>Costeo dinámico:</strong> el costo estimado de un producto no se guarda
+          fijo, se calcula en cada lectura sumando <code>cantidad × precio_por_unidad</code>
+          de cada ingrediente — así si sube el precio de un insumo, el costo del producto
+          se actualiza solo, sin tener que recorrer y actualizar productos manualmente.
+        </li>
+        <li>
+          <strong>RBAC por endpoint:</strong> cada ruta define qué roles pueden acceder,
+          en vez de un único chequeo de "está logueado" — el rol <em>stock</em> puede
+          actualizar inventario pero no aprobar pedidos, por ejemplo.
+        </li>
+        <li>
+          <strong>Repository / Unit of Work genérico:</strong> una capa base reutilizable
+          para que cada módulo (productos, ingredientes, pedidos) no reimplemente su propio
+          CRUD contra la base.
+        </li>
+      </ul>
+
+      <h2>Qué haría distinto</h2>
+      <p>
+        El README del proyecto ya identifica los próximos pasos: sumar websockets para que
+        el cliente vea el avance de su pedido en tiempo real (hoy hay que refrescar la
+        página), y agregar Mercado Pago como forma de pago real en vez de solo efectivo y
+        transferencia.
+      </p>
+
+      <div class="pager">
+        <a href="tremendogol.html">← TremendoGol</a>
+        <a href="flowpedidos.html">flowpedidos →</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span> Nicolás Llaneza
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

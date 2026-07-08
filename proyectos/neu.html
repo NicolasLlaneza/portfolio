@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neu+ — Nicolás Llaneza</title>
+<meta name="description" content="Caso de estudio: sistema de seguimiento post-venta para un taller automotriz, en producción para un cliente real, con React y Supabase.">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="../index.html">Nicolás Llaneza</a>
+      <ul class="nav-links">
+        <li><a href="./">Proyectos</a></li>
+        <li><a href="../index.html#sobre-mi">Sobre mí</a></li>
+        <li><a href="../index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="case-hero">
+      <a class="back-link" href="./">← Volver a proyectos</a>
+      <div class="card-kicker">Producción · Cliente real</div>
+      <h1>Neu+</h1>
+      <p class="lead">
+        Sistema de seguimiento post-venta para un taller automotriz, en uso real por un
+        cliente: gestión de clientes y vehículos, consulta pública de historial por
+        patente, y notificaciones automáticas por WhatsApp.
+      </p>
+
+      <div class="case-meta">
+        <div><div class="label">Rol</div><div class="value">Individual · freelance</div></div>
+        <div><div class="label">Contexto</div><div class="value">Cliente real en producción</div></div>
+        <div><div class="label">Stack</div><div class="value">React · Supabase · Vercel</div></div>
+      </div>
+
+      <img class="case-image" src="../assets/neu.jpg" alt="Panel de clientes de Neu+ (recreación con datos de ejemplo)">
+      <p class="card-image-caption">Recreación de la UI con datos de ejemplo — la app real corre en producción con datos del cliente.</p>
+    </section>
+
+    <section class="case-body" style="padding-top: 0;">
+      <h2>El problema</h2>
+      <p>
+        Un taller de neumáticos manejaba a sus clientes y el historial de servicios de cada
+        vehículo en papel y planillas sueltas. No había forma de avisarle a un cliente
+        cuando le tocaba un service, ni de que alguien (un comprador de auto usado, por
+        ejemplo) pudiera consultar el historial de mantenimiento de un vehículo sin
+        llamar directamente al taller.
+      </p>
+
+      <h2>Qué construí</h2>
+      <p>
+        Una app full-stack sobre Supabase (Postgres + Auth + Edge Functions) donde el
+        taller carga clientes, vehículos y servicios con fotos desde un panel con
+        búsqueda y bajas lógicas (los registros no se borran, se dan de baja para no
+        perder el historial). Además armé una pantalla pública de consulta por patente,
+        protegida con Cloudflare Turnstile para evitar scraping, y un sistema de
+        notificaciones automáticas por WhatsApp para avisarle al cliente cuando su
+        vehículo tiene una novedad.
+      </p>
+
+      <h2>Desafíos técnicos</h2>
+      <ul>
+        <li>
+          <strong>Row Level Security sin recursión:</strong> las políticas RLS de Supabase
+          necesitan consultar la tabla de perfiles para saber si un usuario es admin, lo
+          que genera recursión infinita si no se resuelve con cuidado. Lo solucioné con
+          funciones <code>SECURITY DEFINER</code> que evalúan el rol por fuera de la
+          política que las llama.
+        </li>
+        <li>
+          <strong>Privacidad en la consulta pública:</strong> la Ley 25.326 de protección
+          de datos personales exige no exponer datos innecesarios; la vista pública de
+          consulta por patente muestra el historial del vehículo pero nunca el nombre del
+          titular.
+        </li>
+        <li>
+          <strong>Auditoría infalsificable:</strong> triggers en la base que fijan
+          automáticamente quién creó cada registro, sobreescribiendo cualquier valor que
+          intente mandar el cliente desde el frontend.
+        </li>
+      </ul>
+
+      <h2>Qué haría distinto</h2>
+      <p>
+        Las notificaciones por WhatsApp dependen de la aprobación de Meta para la
+        WhatsApp Business API, que tardó bastante más de lo esperado. Si lo rehiciera,
+        arrancaría ese trámite en paralelo desde el día uno del proyecto. También está
+        planeado (pero todavía no implementado) un sistema de órdenes de trabajo para que
+        los mecánicos carguen diagnósticos desde el celular y el admin los apruebe antes
+        de convertirlos en presupuesto.
+      </p>
+
+      <div class="pager">
+        <a href="flowpedidos.html">← flowpedidos</a>
+        <a href="tremendogol.html">TremendoGol →</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span> Nicolás Llaneza
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
